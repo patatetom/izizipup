@@ -9,6 +9,9 @@ _of course, the sender must be able to contact **izizipup** (firewall et cetera.
 
 ## installation
 
+**izizipup** is a little [Python](https://www.python.org/) script based on the [Flask](https://palletsprojects.com/p/flask/) and [Apscheduler](https://apscheduler.readthedocs.io/) modules.
+
+
 ### system side
 
 ```
