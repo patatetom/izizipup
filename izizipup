@@ -1,0 +1,121 @@
+#!/usr/bin/python3
+
+
+html = """
+<html>
+<head>
+<title>izizipup</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+<input type="file" name="izizipup" accept=".zip,.gz,.gzip,.tgz,.7z,.zst" onchange="document.getElementById('submit').disabled=false"/>
+<input type="submit" id="submit" disabled/>
+</form>
+</body>
+</html>
+"""
+
+
+red, bold, normal = '\x1B[31;1m', '\x1b[37;1m', '\x1b[0m'
+
+
+import os
+if os.geteuid() == 0:
+    print(f'{red}warning: using root account !{normal}')
+
+
+import argparse
+parser = argparse.ArgumentParser(description='Start izizipup : oneshot easy zip uploader')
+parser.add_argument('filename', help='where to store uploaded file')
+parser.add_argument('-p', '--port', type=int, default=5000, help='PORT to listen (default 5000)')
+select = parser.add_mutually_exclusive_group(required=True)
+select.add_argument('-b', '--bind', metavar='IPv4', help='IPv4 address to bind (default to 127.0.0.1 with URL)')
+select.add_argument('-u', '--url', help='URL if proxied')
+args = parser.parse_args()
+
+
+import uuid
+ID = uuid.uuid4()
+if args.bind:
+    from ipaddress import ip_address
+    args.bind = ip_address(args.bind)
+    if args.bind.version != 4:
+        raise ValueError('only IPv4 supported for bind')
+    if args.bind.is_loopback:
+        raise ValueError('loopback not valid for bind')
+    if args.bind.is_unspecified or args.bind.is_reserved:
+        raise ValueError('address not valid for bind')
+    args.bind = str(args.bind)
+    if args.port != 80:
+        print(f'{bold}http://{args.bind}:{args.port}/{ID}{normal}')
+    else:
+        print(f'{bold}http://{args.bind}/{ID}{normal}')
+if args.url:
+    from urllib.parse import urlparse
+    args.url = urlparse(args.url.rstrip('/'))
+    if not args.url.scheme or not args.url.hostname or not args.url.path:
+        raise ValueError('url seems misformed')
+    args.url = args.url.geturl()
+    print(f'{bold}{args.url}/{ID}{normal}')
+
+
+if os.path.exists(args.filename):
+    print(f'{red}warning: {args.filename} already exists !{normal}')
+with open(args.filename, 'a'): pass
+
+
+from apscheduler.schedulers.background import BackgroundScheduler as Scheduler
+scheduler = Scheduler()
+scheduler.start()
+# werkzeug.server.shutdown can't be used outside request
+# timeout = scheduler.add_job(request.environ.get('werkzeug.server.shutdown'), 'interval', minutes=3)
+get_timeout = scheduler.add_job(os._exit, 'interval', minutes=3, args=[0])
+print(f'{bold}waiting 3min for GET...{normal}')
+post_timeout = scheduler.add_job(os._exit, 'interval', minutes=15, args=[0])
+post_timeout.pause()
+
+
+import sys
+from flask import Flask, abort, request, session
+cli = sys.modules['flask.cli']
+cli.show_server_banner = lambda *x: None
+app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 128 * 1024 * 1024
+app.secret_key = os.urandom(16)
+
+
+# import logging
+# log = logging.getLogger('werkzeug')
+# log.setLevel(logging.ERROR)
+# log.disabled = True
+
+
+get_done = False
+@app.route('/<uuid:id>', methods=['GET', 'POST'])
+def index(id):
+	global get_done
+	if id == ID:
+		if request.method == 'POST':
+			if get_done and session.get('get_done') == True:
+				izizipup = request.files['izizipup']
+				if izizipup.filename != '':
+					post_timeout.remove()
+					scheduler.shutdown()
+					izizipup.save(args.filename)
+					session.pop('get_done')
+					request.environ.get('werkzeug.server.shutdown')()
+					return 'Transfer complete : you can close this navigation tab'
+		else:
+			if not get_done:
+				get_done = True
+				get_timeout.remove()
+				post_timeout.resume()
+				print(f'{bold}GET ok, waiting now 15min for POST...{normal}')
+				session['get_done'] = True
+				return html
+	abort(404)
+
+
+if __name__ == '__main__':
+	app.run(host=args.bind, port=args.port)
+
