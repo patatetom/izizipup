@@ -18,7 +18,7 @@ _of course, the sender must be able to contact **izizipup** (firewall et cetera.
 # chmod +x /usr/local/bin/izizipup
 # izizipup
 warning: using root account !
-usage: izizipup [-p PORT] (-b BIND | -u URL) filename
+usage: izizipup [-p PORT] (-b IPv4 | -u URL) filename
 izizipup: error: the following arguments are required: filename
 ```
 
@@ -33,7 +33,7 @@ $ curl -L https://github.com/patatetom/izizipup/raw/main/izizipup > ~/.local/bin
 $ less ~/.local/bin/izizipup
 $ chmod +x ~/.local/bin/izizipup
 $ izizipup
-usage: izizipup [-p PORT] (-b BIND | -u URL) filename
+usage: izizipup [-p PORT] (-b IPv4 | -u URL) filename
 izizipup: error: the following arguments are required: filename
 ```
 
@@ -51,7 +51,7 @@ $ sed -i -e "1i#\!$( readlink -e izizipup/ )/bin/python" -e 1d izizipup/bin/iziz
 $ less izizipup/bin/izizipup
 $ chmod +x izizipup/bin/izizipup
 $ izizipup
-usage: izizipup [-p PORT] (-b BIND | -u URL) filename
+usage: izizipup [-p PORT] (-b IPv4 | -u URL) filename
 izizipup: error: the following arguments are required: filename
 ```
 
@@ -60,6 +60,22 @@ izizipup: error: the following arguments are required: filename
 
 
 ## usage
+
+```
+$ izizipup --help
+usage: izizipup [-h] [-p PORT] (-b IPv4 | -u URL) filename
+
+Start izizipup : oneshot easy zip uploader
+
+positional arguments:
+  filename              where to store uploaded file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PORT, --port PORT  PORT to listen (default 5000)
+  -b IPv4, --bind IPv4  IPv4 address to bind (default to 127.0.0.1 with URL)
+  -u URL, --url URL     URL if proxied
+```
 
 **izizipup** expects at least two parameters :
 - the name of the file in which the transfer will be saved (eg. `filename`)
