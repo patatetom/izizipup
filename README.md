@@ -8,6 +8,7 @@ _of course, the sender must be able to contact **izizipup** (firewall et cetera.
 
 
 ## installation
+
 ### system side
 
 ```
@@ -37,3 +38,21 @@ izizipup: error: the following arguments are required: filename
 ```
 
 > `~/.local/bin` must be part of the `PATH` variable.
+
+
+### virtual env
+
+```
+$ python3 -m venv izizipup
+$ source izizipup/bin/activate
+$ pip install flask apscheduler
+$ curl -L https://github.com/patatetom/izizipup/raw/main/izizipup > izizipup/bin/izizipup
+$ sed -i -e "1i#\!$( readlink -e izizipup/ )/bin/python" -e 1d izizipup/bin/izizipup
+$ less izizipup/bin/izizipup
+$ chmod +x izizipup/bin/izizipup
+$ izizipup
+usage: izizipup [-p PORT] (-b BIND | -u URL) filename
+izizipup: error: the following arguments are required: filename
+```
+
+> `sed` replaces the system python interpreter by the one of the virtual environment.
