@@ -109,3 +109,28 @@ waiting 3min for GET...
 127.0.0.1 - - [17/Dec/2020 15:44:13] "GET /0e022145-5dcc-4008-94d4-4210e031121f HTTP/1.1" 200 -
 GET ok, waiting now 15min for POST...
 ```
+
+
+### izizipup @ frontend
+
+when **izizipup** works this way (eg. `IPv4` address), it is directly exposed.
+
+```
+$ ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 93:55:8D:56:95:91 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.1/24 brd 192.168.1.255 scope global dynamic noprefixroute wlan0
+       valid_lft 61115sec preferred_lft 50315sec
+
+$ izizipup -b 192.168.1.1 /tmp/long-awaited-file
+http://192.168.1.1:5000/0206ada9-8313-499b-8025-ada3fb4c85f2
+waiting 3min for GET...
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Running on http://192.168.1.1:5000/ (Press CTRL+C to quit)
+```
+
+the highlighted URL `http://192.168.1.1:5000/0206ada9-8313-499b-8025-ada3fb4c85f2` can be shared with the sender who will have 3 minutes to retrieve the upload form and then 15 minutes to upload the file to be transferred.
