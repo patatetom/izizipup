@@ -111,6 +111,11 @@ GET ok, waiting now 15min for POST...
 ```
 
 
+### upload form
+
+when the expected HTML GET request occurs within the allotted time, a small and basic upload form is sent back to the sender (eg. the client).
+
+
 ### izizipup @ frontend
 
 when **izizipup** works this way (eg. `IPv4` address), it is directly exposed.
@@ -129,8 +134,20 @@ $ ip addr
 $ izizipup -b 192.168.1.1 /tmp/long-awaited-file
 http://192.168.1.1:5000/0206ada9-8313-499b-8025-ada3fb4c85f2
 waiting 3min for GET...
- * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
  * Running on http://192.168.1.1:5000/ (Press CTRL+C to quit)
 ```
 
 the highlighted URL `http://192.168.1.1:5000/0206ada9-8313-499b-8025-ada3fb4c85f2` can be shared with the sender who will have 3 minutes to retrieve the upload form and then 15 minutes to upload the file to be transferred.
+
+the port can of course be a privileged port.
+
+```
+$ sudo izizipup -b 192.168.1.1 -p 80 /tmp/long-awaited-file
+[sudo] password for pascal: 
+warning: using root account !
+http://192.168.1.1/5f305b56-af0f-4835-ab5e-98de60e6d5d4
+waiting 3min for GET...
+ * Running on http://192.168.1.1:5000/ (Press CTRL+C to quit)
+```
+
+> `warning: using root account !` is issued in this case.
