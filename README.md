@@ -83,3 +83,26 @@ optional arguments:
   - either the URL which must be used when it is used in backend (eg. `-u URL` or `--url URL`).
 
 > `IPv4` address and `URL` are mutually exclusive.
+
+
+### timeout
+
+**izizipup** starts two time counters that will interrupt the service if the expected request has not occurred within the allotted time.
+
+the first time counter waits **3 minutes** for an HTML GET request.
+
+```
+…
+waiting 3min for GET...
+…
+```
+
+the second time counter, triggered at the arrival of the expected HTML GET request, waits **15 minutes** for an HTML POST request.
+
+```
+…
+waiting 3min for GET...
+…
+127.0.0.1 - - [17/Dec/2020 15:44:13] "GET /0e022145-5dcc-4008-94d4-4210e031121f HTTP/1.1" 200 -
+GET ok, waiting now 15min for POST...
+```
