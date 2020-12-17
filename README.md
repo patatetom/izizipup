@@ -121,11 +121,7 @@ when the expected HTML GET request occurs within the allotted time, a small and 
 when **izizipup** works this way (eg. `IPv4` address), it is directly exposed.
 
 ```
-$ ip addr
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
+$ ip addr show dev wlan0
 2: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
     link/ether 93:55:8D:56:95:91 brd ff:ff:ff:ff:ff:ff
     inet 192.168.1.1/24 brd 192.168.1.255 scope global dynamic noprefixroute wlan0
