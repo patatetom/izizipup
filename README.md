@@ -165,11 +165,20 @@ waiting 3min for GET...
 
 like in frontend, the highlighted URL `http://www.domain.tld/location/d761df3e-1193-44e4-b9cb-3997d4e17d72` can be shared with the sender who will have 3 minutes to retrieve the upload form and then 15 minutes to upload the file to be transferred.
 
-https can be used here if the front-end server supports it.
+https can be used here if the frontend server supports it.
 
 ```
-izizipup -u https://webserver.tld/location/ /tmp/long-awaited-file
-https://webserver.tld/location/6a0d2a4c-d036-454d-acee-beabd3bf92bd
+izizipup -u https://www.domain.tld/izizipup/ /tmp/long-awaited-file
+https://www.domain.tld/izizipup/6a0d2a4c-d036-454d-acee-beabd3bf92bd
 waiting 3min for GET...
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
+
+#### Apache
+
+#### Nginx
+
+add this location to `/etc/nginx/nginx.conf` nginx configuration file.
+
+```
 ```
