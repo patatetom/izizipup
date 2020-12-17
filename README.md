@@ -65,3 +65,5 @@ izizipup: error: the following arguments are required: filename
 - the name of the file in which the transfer will be saved (eg. `filename`)
   - either the IPv4 address on which to listen when it is used in frontend (eg. `-b IPv4` or `--bind IPv4`)
   - either the URL which must be used when it is used in backend (eg. `-u URL` or `--url URL`).
+
+> `IPv4` address and `URL` are mutually exclusive.
