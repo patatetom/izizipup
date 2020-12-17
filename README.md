@@ -142,7 +142,7 @@ the port can of course be a privileged port.
 
 ```
 $ sudo izizipup -b 192.168.1.1 -p 80 /tmp/long-awaited-file
-[sudo] password for pascal: 
+[sudo] password for user: 
 warning: using root account !
 http://192.168.1.1/5f305b56-af0f-4835-ab5e-98de60e6d5d4
 waiting 3min for GET...
@@ -150,3 +150,26 @@ waiting 3min for GET...
 ```
 
 > `warning: using root account !` is issued in this case.
+
+
+### izizipup @ backend
+
+when **izizipup** works this way (eg. `URL`), it is usually proxied (behind Apache or Nginx for example).
+
+```
+$ izizipup -u http://www.domain.tld/location/ /tmp/long-awaited-file
+http://www.domain.tld/location/d761df3e-1193-44e4-b9cb-3997d4e17d72
+waiting 3min for GET...
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
+
+like in frontend, the highlighted URL `http://www.domain.tld/location/d761df3e-1193-44e4-b9cb-3997d4e17d72` can be shared with the sender who will have 3 minutes to retrieve the upload form and then 15 minutes to upload the file to be transferred.
+
+https can be used here if the front-end server supports it.
+
+```
+izizipup -u https://webserver.tld/location/ /tmp/long-awaited-file
+https://webserver.tld/location/6a0d2a4c-d036-454d-acee-beabd3bf92bd
+waiting 3min for GET...
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
