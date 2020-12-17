@@ -115,6 +115,9 @@ GET ok, waiting now 15min for POST...
 
 when the expected HTML GET request occurs within the allotted time, a small and basic upload form is sent back to the sender (eg. the client).
 
+[![Select](https://img.shields.io/badge/Select%20a%20file-No%20file%20selected-silver?style=social)]()
+[![Send](https://img.shields.io/badge/Send-%20-gray)]()
+
 
 ### izizipup @ frontend
 
