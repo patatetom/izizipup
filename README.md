@@ -80,7 +80,7 @@ optional arguments:
   -u URL, --url URL     URL if proxied
 ```
 
-**izizipup** expects at least two parameters :
+**izizipup** expects at least two parameters:
 - the name of the file in which the transfer will be saved (eg. `filename`)
   - either the IPv4 address on which to listen when it is used in frontend (eg. `-b IPv4` or `--bind IPv4`)
   - either the URL which must be used when it is used in backend (eg. `-u URL` or `--url URL`).
@@ -176,9 +176,19 @@ waiting 3min for GET...
 
 #### Apache
 
-#### Nginx
-
-add this location to `/etc/nginx/nginx.conf` nginx configuration file.
+adapt and add this directive to your Apache configuration:
 
 ```
+ProxyPass "/izizipup/" "http://127.0.0.1:5000/"
+```
+
+#### Nginx
+
+adapt and add the following location block to your Nginx configuration:
+
+```
+location /izizipup/ {
+ client_max_body_size 256M;
+ proxy_pass http://127.0.0.1:5000/;
+}
 ```
