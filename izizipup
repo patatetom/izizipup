@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
 
-html = """
-<html>
+html_get = """
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <title>izizipup</title>
 </head>
@@ -11,6 +12,19 @@ html = """
 <input type="file" name="izizipup" accept=".zip,.gz,.gzip,.tgz,.7z,.zst" onchange="document.getElementById('submit').disabled=false"/>
 <input type="submit" id="submit" disabled/>
 </form>
+</body>
+</html>
+"""
+
+
+html_post = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>izizipup</title>
+</head>
+<body>
+Transfer complete : you can close this navigation tab.
 </body>
 </html>
 """
@@ -104,7 +118,7 @@ def index(id):
 					izizipup.save(args.filename)
 					session.pop('get_done')
 					request.environ.get('werkzeug.server.shutdown')()
-					return 'Transfer complete : you can close this navigation tab'
+					return html_post
 		else:
 			if not get_done:
 				get_done = True
@@ -112,7 +126,7 @@ def index(id):
 				post_timeout.resume()
 				print(f'{bold}GET ok, waiting now 15min for POST...{normal}')
 				session['get_done'] = True
-				return html
+				return html_get
 	abort(404)
 
 
